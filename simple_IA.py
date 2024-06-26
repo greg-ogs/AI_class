@@ -3,7 +3,7 @@ from tensorflow import keras
 from keras.models import Sequential
 from keras.layers import Dense
 import numpy as np
-
+import matplotlib.pyplot as plt
 
 class AI:
     def __init__(self):
@@ -25,12 +25,34 @@ class AI:
         y = ny.to_numpy()
 
         # 3. Compile and Train
-        self.model.compile(loss='binary_crossentropy', optimizer=keras.optimizers.Adam(), metrics=['accuracy'])
-        self.model.fit(X, y, epochs=500, batch_size=32)  # Tune hyperparameters
+        self.model.compile(loss='binary_crossentropy',
+                           optimizer=keras.optimizers.Adam(learning_rate=0.001, gradient_accumulation_steps=None),
+                           metrics=['accuracy'])
+        # Gradient descent (with momentum) optimizer.
+        # self.model.compile(loss='binary_crossentropy',
+        #                    optimizer=keras.optimizers.SGD(learning_rate=0.01, gradient_accumulation_steps=None),
+        #                    metrics=['accuracy'])
+        history = self.model.fit(X, y, epochs=250, batch_size=32, validation_split=0.2)  # Tune hyperparameters
 
         # 4. Evaluate and Predict (Optional)
         accuracy = self.model.evaluate(X, y)
-        print('Model Accuracy:', accuracy)
+        acc = history.history['accuracy']
+        val_acc = history.history['val_accuracy']
+        loss = history.history['loss']
+        val_loss = history.history['val_loss']
+        epochs_range = range(250)
+        plt.figure(figsize=(8, 8))
+        plt.subplot(1, 2, 1)
+        plt.plot(epochs_range, acc, label='Training Accuracy')
+        plt.plot(epochs_range, val_acc, label='Validation Accuracy')
+        plt.legend(loc='lower right')
+        plt.title('Training and Validation Accuracy')
+        plt.subplot(1, 2, 2)
+        plt.plot(epochs_range, loss, label='Training Loss')
+        plt.plot(epochs_range, val_loss, label='Validation Loss')
+        plt.legend(loc='upper right')
+        plt.title('Training and Validation Loss')
+        plt.show()
 
     def predict(self, px):
         new_data = pd.DataFrame(px)  # Replace with your new data
@@ -79,5 +101,5 @@ def from_pretrained():
 
 
 if __name__ == '__main__':
-    # train()
+    train()
     from_pretrained()
