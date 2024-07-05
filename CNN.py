@@ -63,8 +63,8 @@ class CNN:
 
     def compile_model(self):
         self.model.compile(optimizer='adam',
-                      loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-                      metrics=['accuracy'])
+                           loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+                           metrics=['accuracy'])
         self.model.summary()
 
     def train_model(self):
@@ -111,6 +111,8 @@ class CNN:
             "This image most likely belongs to {} with a {:.2f} percent confidence."
             .format(self.class_names[np.argmax(score)], 100 * np.max(score))
         )
+
+
 if __name__ == '__main__':
     net = CNN()
     net.dataset()
