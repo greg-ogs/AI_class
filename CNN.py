@@ -16,7 +16,7 @@ class CNN:
 
     def dataset(self):
         #dataset load
-        self.data_dir = r'D:\dev\Python_scripts\AI_class-main\AI_class\flower_photos'
+        self.data_dir = r'flower_photos'
         # Dataset split
         self.train_ds = tf.keras.utils.image_dataset_from_directory(
             self.data_dir,
@@ -97,7 +97,7 @@ class CNN:
         plt.show()
 
     def predict_model(self):
-        sunflower_path = ''
+        sunflower_path = 'images.jpg'
         img = tf.keras.utils.load_img(
             sunflower_path, target_size=(self.img_height, self.img_width)
         )
@@ -111,3 +111,10 @@ class CNN:
             "This image most likely belongs to {} with a {:.2f} percent confidence."
             .format(self.class_names[np.argmax(score)], 100 * np.max(score))
         )
+if __name__ == '__main__':
+    net = CNN()
+    net.dataset()
+    net.cnn_structure()
+    net.compile_model()
+    net.train_model()
+    net.predict_model()
