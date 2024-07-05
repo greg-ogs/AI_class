@@ -7,10 +7,6 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 
-data_dir = r'D:\dev\Python_scripts\AI_class-main\AI_class\flower_photos'
-image_count = len(list(data_dir.glob('*/*.jpg')))
-print(image_count)
-
 
 class CNN:
     def __init__(self):
@@ -21,8 +17,6 @@ class CNN:
     def dataset(self):
         #dataset load
         self.data_dir = r'D:\dev\Python_scripts\AI_class-main\AI_class\flower_photos'
-        image_count = len(list(data_dir.glob('*/*.jpg')))
-        print(image_count)
         # Dataset split
         self.train_ds = tf.keras.utils.image_dataset_from_directory(
             self.data_dir,
