@@ -15,12 +15,16 @@ class AI:
         self.model = Sequential()
         self.model.add(Dense(12, input_dim=7, activation='relu'))  # 12 neurons, 7 inputs
         self.model.add(Dense(8, activation='relu'))  # 8 neurons 12 inputs
+        self.model.add(Dense(16, activation='relu'))
+        self.model.add(Dense(32, activation='relu'))
+        self.model.add(Dense(64, activation='relu'))
+        self.model.add(Dense(128, activation='relu'))
         # self.model.add(Dense(1, activation='sigmoid'))  # Sigmoid for binary classification # 1 neuron, 8 inputs
         self.model.add(Dense(3, activation='softmax'))  # For multiclass, 3 classes
 
     def main_pipeline(self):
         # 1. Load and Prepare Data
-        df = pd.read_csv("factorized_credit_card.csv")  # Replace with your dataset path
+        df = pd.read_csv("/app/datasets/factorized_credit_card.csv")  # Replace with your dataset path
 
         # Assuming DEFAULT is your target variable
         nX = df.drop('EDUCATION', axis=1)
@@ -35,7 +39,7 @@ class AI:
         self.model.compile(loss='categorical_crossentropy',
                            # loss='binary_crossentropy',
                            # loss='categorical_crossentropy',
-                           optimizer=keras.optimizers.Adam(learning_rate=0.0001, gradient_accumulation_steps=None),
+                           optimizer=keras.optimizers.Adam(learning_rate=0.00001),  # gradient_accumulation_steps=None
                            metrics=['accuracy'])
         # Gradient descent (with momentum) optimizer.
         # self.model.compile(loss='binary_crossentropy',
@@ -69,7 +73,7 @@ class AI:
         return predictions
 
     def save_model(self):
-        self.model.save('model.keras')
+        self.model.save('/app/ANN/ANN_model.keras')
 
     def load_model(self):
         self.model = keras.models.load_model('model.keras')
@@ -78,7 +82,7 @@ class AI:
 class NewDataType:
     def __init__(self):
         # Read the CSV file into a DataFrame
-        self.df = pd.read_csv('credit_card.csv')
+        self.df = pd.read_csv('/app/datasets/credit_card.csv')
 
     def execute_factor(self):
         # Convert `CHECKING_ACCOUNT`, `EDUCATION`, and `MARRIAGE` to numerical representations
@@ -94,10 +98,10 @@ def train():
     ai_0 = AI()
     ai_0.main_pipeline()
     ai_0.save_model()
-    my_predictions = ai_0.predict([[6022, 0, 0, 24, 934.0122, 0.0, 1]])  # need 1
-    print('inference = ' + str(my_predictions) + 'and i need 1')
-    my_predictions = ai_0.predict([[27099, 0, 1, 34, 4223.5297, 457.0698, 1]])  #  need 0
-    print('inference = ' + str(my_predictions) + 'and i need 0')
+    my_predictions = ai_0.predict([[6022, 0, 0, 24, 934.0122, 0.0, 1]])
+    print('inference = ' + str(my_predictions))
+    my_predictions = ai_0.predict([[27099, 0, 1, 34, 4223.5297, 457.0698, 1]])
+    print('inference = ' + str(my_predictions))
 
 
 def from_pretrained():

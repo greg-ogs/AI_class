@@ -9,13 +9,14 @@ from tensorflow.keras.models import Sequential
 
 class CNN:
     def __init__(self):
+        # dataset load
+        self.data_dir = r'/app/datasets/flower_photos'
+
         self.batch_size = 32
         self.img_height = 180
         self.img_width = 180
 
     def dataset(self):
-        #dataset load
-        self.data_dir = r'flower_photos'
         # Dataset split
         self.train_ds = tf.keras.utils.image_dataset_from_directory(
             self.data_dir,
@@ -67,7 +68,7 @@ class CNN:
         self.model.summary()
 
     def train_model(self):
-        epochs = 10
+        epochs = 100
         history = self.model.fit(
             self.train_ds,
             validation_data=self.val_ds,
@@ -96,7 +97,7 @@ class CNN:
         plt.show()
 
     def predict_model(self):
-        sunflower_path = 'images.jpg'
+        sunflower_path = '/app/datasets/images.jpg'
         img = tf.keras.utils.load_img(
             sunflower_path, target_size=(self.img_height, self.img_width)
         )
@@ -111,6 +112,9 @@ class CNN:
             .format(self.class_names[np.argmax(score)], 100 * np.max(score))
         )
 
+    def save_model(self):
+        self.model.save('/app/CNN/CNN_model.keras')
+
 
 if __name__ == '__main__':
     net = CNN()
@@ -119,3 +123,4 @@ if __name__ == '__main__':
     net.compile_model()
     net.train_model()
     net.predict_model()
+    net.save_model()
